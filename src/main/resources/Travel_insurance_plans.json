@@ -1,0 +1,46 @@
+[
+ {
+    "plan": "gold",
+    "coverage": 25000,
+    "bracket": [
+    {
+        "minAge": 21,
+        "maxAge": 50,
+        "premiumPerday":13
+    },
+    {
+      "minAge": 21,
+      "maxAge": 50,
+      "premiumPerday": 10 
+    },
+    {
+      "minAge": 51,
+      "maxAge": 80,
+      "premiumPerday": 15 
+    }
+  ]
+ }, 
+
+{
+   "plan": "platinum",
+	"coverage": 50000,
+	"bracket":[
+    {
+        "minAge": 21,
+        "maxAge": 50,
+        "premiumPerday":18
+    },
+    {
+      "minAge": 21,
+      "maxAge": 50,
+      "premiumPerday": 15  
+    },
+    {
+      "minAge": 51,
+      "maxAge": 80,
+      "premiumPerday": 20 
+    }
+    
+   ]
+ }
+]
