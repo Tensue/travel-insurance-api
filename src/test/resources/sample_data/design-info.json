@@ -1,0 +1,10 @@
+{
+  "sampleData": {
+    "40f30acb-d759-48a8-abf7-c7f232c26909": {
+      "attributes": "sample_data/name.xml"
+    },
+    "3fd874e9-b2fe-49dd-81f1-62e8b6cbd018": {
+      "attributes": "sample_data/json.json"
+    }
+  }
+}

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd">
+	<configuration doc:name="Configuration" doc:id="0411b150-012f-457d-9b32-59145802b1a4" defaultErrorHandler-ref="globalError_Handler" />
+	<configuration-properties doc:name="Configuration properties" doc:id="06a8972f-ce23-42ed-9e0a-02c5bfad1da5" file="config/${env}.yaml" />
+	<global-property doc:name="Global Property" doc:id="777eefb5-b4e1-430b-a838-1c7d99879d0e" name="env" value="local" />
+	<api-gateway:autodiscovery apiId="${id}" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="bcc15f62-f485-44a9-b880-409f30999e88" flowRef="tensue-tavel-insurance-api--main" />
+	<error-handler name="globalError_Handler" doc:id="8d2e000e-c794-4de3-ad09-006ac05dab5e" >
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="c5eb0269-2b70-49c2-a4f8-716963d87825" >
+			<ee:transform doc:name="Transform Message" doc:id="7bc89889-0ceb-4405-88e8-3944df812949" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+}]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+		</on-error-propagate>
+	</error-handler>
+	<sub-flow name="Set_error-response-sub-flow" doc:id="b833723a-69b5-4a5a-a342-83a39e494a55" >
+		<ee:transform doc:name="error reponse" doc:id="5fcdd660-8db1-49f1-b296-79babf7b0e62" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	error:
+    {
+		"message": error.description,
+		"type": error.errorType.identifier
+	}
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</sub-flow>
+</mule>

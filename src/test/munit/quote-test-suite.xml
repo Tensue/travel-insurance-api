@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="quote-test-suite.xml" />
+	<global-property doc:name="Global Property" doc:id="d9ce47f6-8e11-4031-937d-bfb8365444e7" name="env" value="local" />
+	<munit:test name="quote-test-suite-get-quote-Sub-FlowTest" doc:id="c74af744-e264-4ac1-ae90-03d14276add0" description="Test">
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="711ef837-0724-49e6-bd99-41c260787314" >
+				<munit:attributes value='#[{"queryParams":&#10;	{&#10;	"age": "35",&#10;	"destination": "Asia",&#10;	"tripStartDate": "2022-12-01",&#10;	"tripEndDate": "2022-12-15"&#10;	}&#10;}]' mediaType="application/json" />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to get-quote-Sub-Flow" doc:id="8e2b951f-5db1-462b-b789-643da41dff88" name="get-quote-Sub-Flow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="7ac3aeca-752f-4056-9565-09fe352385a7" actual="#[payload[0].premium]" expected="#[150]" message="premium for gold plan should be 150"/>
+		</munit:validation>
+	</munit:test>
+
+
+</mule>

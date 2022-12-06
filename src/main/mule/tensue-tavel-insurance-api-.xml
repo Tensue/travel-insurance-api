@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd ">
+    <http:listener-config name="tensue-tavel-insurance-api--httpListenerConfig">
+        <http:listener-connection host="${http.host}" port="${http.port}" />
+    </http:listener-config>
+    <apikit:config name="tensue-tavel-insurance-api--config" api="resource::0aee93ba-0bf7-4a6e-aac6-54e3976d567d:tensue-tavel-insurance:1.0.0:raml:zip:tensue-tavel-insurance-api-.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
+	<flow name="tensue-tavel-insurance-api--main">
+        <http:listener config-ref="tensue-tavel-insurance-api--httpListenerConfig" path="/api/*">
+            <http:response statusCode="#[vars.httpStatus default 200]">
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+            </http:response>
+            <http:error-response statusCode="#[vars.httpStatus default 500]">
+                <http:body>#[payload]</http:body>
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+            </http:error-response>
+        </http:listener>
+        <apikit:router config-ref="tensue-tavel-insurance-api--config" />
+        <error-handler>
+            <on-error-propagate type="APIKIT:BAD_REQUEST">
+				<flow-ref doc:name="Flow Reference" doc:id="cec85700-03e0-4d6a-898c-d3d137226a4a" name="Set_error-response-sub-flow"/>
+            </on-error-propagate>
+            <on-error-propagate type="APIKIT:NOT_FOUND">
+				<flow-ref doc:name="Flow Reference" doc:id="e4272b81-465c-443a-9591-832c23dac030" name="Set_error-response-sub-flow"/>
+            </on-error-propagate>
+            <on-error-propagate type="APIKIT:METHOD_NOT_ALLOWED">
+				<flow-ref doc:name="Flow Reference" doc:id="6793bb55-d842-4551-9bd8-8cc7d613a5e3" name="Set_error-response-sub-flow"/>
+            </on-error-propagate>
+            <on-error-propagate type="APIKIT:NOT_ACCEPTABLE">
+				<flow-ref doc:name="Flow Reference" doc:id="4716b2f4-529c-4033-88ff-d1f0014fa653" name="Set_error-response-sub-flow"/>
+            </on-error-propagate>
+            <on-error-propagate type="APIKIT:UNSUPPORTED_MEDIA_TYPE">
+				<flow-ref doc:name="Flow Reference" doc:id="723dd9be-d744-406e-b7dd-7cd10cacfb15" name="Set_error-response-sub-flow"/>
+            </on-error-propagate>
+            <on-error-propagate type="APIKIT:NOT_IMPLEMENTED">
+				<flow-ref doc:name="Flow Reference" doc:id="74e6e112-7d3d-429e-bce5-23dc1c87f678" name="Set_error-response-sub-flow"/>
+            </on-error-propagate>
+        </error-handler>
+    </flow>
+    <flow name="get:\quote:tensue-tavel-insurance-api--config">
+        <flow-ref doc:name="get-quote-Sub-Flow" doc:id="b1fc72d4-0946-4418-81a5-d342ed1b24ae" name="get-quote-Sub-Flow"/>
+    </flow>
+</mule>

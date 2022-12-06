@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="quote-suite.xml" />
+	<munit:test name="get-quote-Sub-Flow-test" doc:id="43da61a6-c4ba-4f97-93e4-90f4268a7769" >
+		<munit:behavior >
+			<munit:set-event doc:name="Set Input" doc:id="34794e0c-9a4a-4a05-a6b5-2f4f676c9eea" >
+				<munit:payload value="#[readUrl('classpath://getquoteSubFlowtest\set-event_payload.dwl')]" encoding="UTF-8" mediaType="application/json" />
+				
+				<munit:attributes value="#[readUrl('classpath://getquoteSubFlowtest\set-event_attributes.dwl')]" />
+				
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://getquoteSubFlowtest\set-event_variable_.dwl')]" />
+				</munit:variables>
+				
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://getquoteSubFlowtest\set-event_variable_.dwl')]" />
+				
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to get-quote-Sub-Flow" doc:id="93456cfb-8e98-4d02-a175-ba9ae54e0733" name="get-quote-Sub-Flow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="a39cc2b0-f728-4e88-bbf8-83724cd9373c" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import getquoteSubFlowtest::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
+	</munit:test>
+
+
+</mule>
